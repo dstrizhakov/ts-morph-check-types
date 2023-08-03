@@ -1,8 +1,27 @@
-// import checkTypes from "./utils/morphTest";
-// import { codeExample, testExample } from "./mock/data.js";
 const checkTypes = require("./src/utils/morphTest");
-const { codeExample, testExample } = require("./src/mock/data.js");
+const fs = require("fs");
 
-const [diagnostics, formattedDiagnostics] = checkTypes(codeExample, testExample);
+const CODE = process.env.CODE;
+const TEST = process.env.TEST;
+const FORMAT = process.env.FORMAT || "string"; // 'string' by default or 'file';
 
-console.log(formattedDiagnostics || "\nTest completed successfully!\n");
+const startTest = (codeExample, testExample, format) => {
+  if (format !== "string" && format !== "file") {
+    console.error("Invalid FORMAT: " + format);
+    return null;
+  }
+  if (format === "string") {
+    wrireResults(...checkTypes(codeExample, testExample));
+  } else if (format === "file") {
+    const codeString = fs.readFileSync(codeExample);
+    const testString = fs.readFileSync(testExample);
+    wrireResults(...checkTypes(codeString, testString));
+  }
+};
+
+const wrireResults = (diagnostics, formattedDiagnostics) => {
+  fs.writeFileSync("./results/diagnostics.json", JSON.stringify(diagnostics));
+  fs.writeFileSync("./results/formattedDiagnostics.json", JSON.stringify(formattedDiagnostics));
+};
+
+startTest(CODE, TEST, FORMAT);
