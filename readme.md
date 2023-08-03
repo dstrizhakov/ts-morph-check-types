@@ -14,5 +14,16 @@ Im using the tsafe library to check the types additionally.
 ### How to use:
 
 ```sh
-  $ node index.js
+const child_process = require("child_process");
+let _exec = child_process.exec;
+_exec(`CODE=${your ts code} TEST=${your ts tests} FORMAT=${"string"} node index.js`,{},() => {});
 ```
+
+### Code & Test examples
+
+You can found code and test examples in src/mock folder.
+
+### License
+
+MIT
+**Free Software, Hell Yeah!**
