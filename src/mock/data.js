@@ -3,7 +3,7 @@ export type User = {
   name: string,
   age: number,
   occupation: string;
-  job: string: // this string is occuring error messages
+  job: string; // this string is occuring error messages
 };
 export const users: User[] = [
     {
